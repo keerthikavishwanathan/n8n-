@@ -84,11 +84,7 @@ def optimize_blog():
                         }
                     ]
                 }
-            ],
-            thinking={
-                "type": "enabled",
-                "budget_tokens": 16000
-            }
+            ]
         )
 
         # Extract optimized content from response
