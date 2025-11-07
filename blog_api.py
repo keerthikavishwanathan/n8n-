@@ -5,9 +5,12 @@ import os
 app = Flask(__name__)
 
 # Initialize Anthropic client
-client = anthropic.Anthropic(
-    api_key=os.environ.get("ANTHROPIC_API_KEY")
-)
+api_key = os.environ.get("ANTHROPIC_API_KEY")
+if not api_key:
+    print("WARNING: ANTHROPIC_API_KEY environment variable is not set!")
+    print("The API will fail when making requests to Claude.")
+
+client = anthropic.Anthropic(api_key=api_key)
 
 SYSTEM_PROMPT = """You are an SEO Content Optimization Assistant specialized in internal linking and content freshness updates.
 
@@ -112,4 +115,5 @@ def health():
     return jsonify({'status': 'ok'}), 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
