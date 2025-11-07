@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 import anthropic
 import os
+import threading
+import requests
 
 app = Flask(__name__)
 
@@ -69,7 +71,6 @@ def optimize_blog():
 
         # Replace placeholder in system prompt
         system_prompt = SYSTEM_PROMPT.replace('{{BLOG_CONTENT}}', blog_content)
-        user_prompt = SYSTEM_PROMPT.replace('{{BLOG_CONTENT}}', blog_content)
 
         # Call Claude API
         message = client.messages.create(
@@ -83,7 +84,7 @@ def optimize_blog():
                     "content": [
                         {
                             "type": "text",
-                            "text": user_prompt
+                            "text": "Please process the blog content according to the instructions provided above."
                         }
                     ]
                 }
